@@ -44,7 +44,7 @@ import traceback
 import signal
 import schedule   #need to get this from gethub
 
-from localsettings_hsm import *
+from localsettings_use_me import *
 from runtimesettings import *
 
 version_string = "1.5.1.9"

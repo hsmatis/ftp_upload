@@ -33,6 +33,10 @@
 #                                                                                #
 ##################################################################################
 
+
+#  When you put your passwords into this file reaname is to localsettings_use_me.py
+#  We do this so passwords are not put in github
+
 	
 ftp_server = "charingcrosssherwick.org"
 ftp_username = "ftp username"
