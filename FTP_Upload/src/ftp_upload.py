@@ -47,7 +47,7 @@ import schedule   #need to get this from gethub
 from localsettings_use_me import *
 from runtimesettings import *
 
-version_string = "1.5.1.9"
+version_string = "1.5.1.10"
 
 max_threads = 8 # max number of total threads when needed one thread will be used for purging job, rest of time all threads will be used for upload.
 reserved_priority_threads = 3 # previousdays can only upload multithreaded when running today threads fall below this number.
@@ -385,24 +385,21 @@ def set_up_logging():
         
         # set up the rotating log file handler
         #
-        logfile = logging.handlers.TimedRotatingFileHandler(ftp_upload_log,
-                                                            when= rotate, backupCount=logfile_max_days)
-                                                            logfile.setLevel(logfile_log_level)
-                                                            logfile.setFormatter(logging.Formatter(
-                                                                                                   '%(asctime)s %(levelname)-8s %(threadName)-10s %(message)s',
-                                                                                                   '%m-%d %H:%M:%S'))
-                                                                                                   logger.addHandler(logfile)
-                                                                                                   
-                                                                                                   # define a Handler which writes messages equal to or greater than
-                                                                                                   # console_log_level to the sys.stderr
-                                                                                                   console = logging.StreamHandler()
-                                                                                                   console.setLevel(console_log_level)
-                                                                                                   # set a format which is simpler for console use
-                                                                                                   formatter = logging.Formatter('%(levelname)-8s %(message)s')
-                                                                                                   # tell the handler to use this format
-                                                                                                   console.setFormatter(formatter)
-                                                                                                   # add the handler to the root logger
-                                                                                                   logging.getLogger('').addHandler(console)
+        logfile = logging.handlers.TimedRotatingFileHandler(ftp_upload_log, when= rotate, backupCount=logfile_max_days)
+        logfile.setLevel(logfile_log_level)
+        logfile.setFormatter(logging.Formatter('%(asctime)s %(levelname)-8s %(threadName)-10s %(message)s','%m-%d %H:%M:%S'))
+        logger.addHandler(logfile)
+                                                                                       
+        # define a Handler which writes messages equal to or greater than
+        # console_log_level to the sys.stderr
+        console = logging.StreamHandler()
+        console.setLevel(console_log_level)
+        # set a format which is simpler for console use
+        formatter = logging.Formatter('%(levelname)-8s %(message)s')
+        # tell the handler to use this format
+        console.setFormatter(formatter)
+        # add the handler to the root logger
+        logging.getLogger('').addHandler(console)
         set_up_logging.not_done = False
 set_up_logging.not_done = True  # logging should only be set up once, but
 # set_up_logging() may be called multiple times when testing
