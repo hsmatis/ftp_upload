@@ -47,12 +47,9 @@ import schedule   #need to get this from gethub
 from localsettings_use_me import *
 from runtimesettings import *
 
-version_string = "1.5.1.10"
+version_string = "1.5.1.11"
 
-max_threads = 8 # max number of total threads when needed one thread will be used for purging job, rest of time all threads will be used for upload.
-reserved_priority_threads = 3 # previousdays can only upload multithreaded when running today threads fall below this number.
 current_priority_threads=0 # global variable shared between threads keeping track of running priority threads.
-
 
 def mkdir(dirname):
     try:

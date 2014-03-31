@@ -63,4 +63,7 @@ retain_days = 6 # number of days to retain local images. (not on the FTP server)
 save_log_interval = 1    #minutes
 save_log_time = "1:00"   #24 hour time running
 
+max_threads = 8 # max number of total threads when needed one thread will be used for purging job, rest of time all threads will be used for upload.
+reserved_priority_threads = 3 # previousdays can only upload multithreaded when running today threads fall below this number.
+
 
