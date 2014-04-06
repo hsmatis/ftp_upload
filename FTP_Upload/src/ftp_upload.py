@@ -47,7 +47,7 @@ import schedule   #need to get this from gethub
 from localsettings_use_me import *
 from runtimesettings import *
 
-version_string = "1.5.1.11"
+version_string = "1.5.1.12"
 
 current_priority_threads=0 # global variable shared between threads keeping track of running priority threads.
 
@@ -215,31 +215,36 @@ def storelogfile(ftp_dir, filepath, filename, today):             #For storing l
     logging.info("filename = %s", filename)
     
     ftp_connection = connect_to_ftp()
-    if ftp_connection != None:
-        change_create_ftp_dir(ftp_connection, ftp_dir)
-        logging.info("Uploading %s", filepath)
-        try:
-            filehandle = open(filepath, "rb")
-            ftp_connection.storbinary("STOR " + filename, filehandle)
-            filehandle.close()
-            logging.info("file : %s stored on ftp", filename)
-            logging.info("moving file to Storage")
+    count = 0
+    not_upload = True
+    while not_upload or count < 5:           #Loop to upload files
+        count += 1
+        if ftp_connection != None:
+            change_create_ftp_dir(ftp_connection, ftp_dir)
+            logging.info("Uploading %s", filepath)
+            try:
+                filehandle = open(filepath, "rb")
+                ftp_connection.storbinary("STOR " + filename, filehandle)
+                filehandle.close()
+                logging.info("file : %s stored on ftp", filename)
+                logging.info("moving file to Storage")
+                not_upload = False
+
+            except Exception, e:
+                logging.error("Failed to store logfile file: %s: %s", filepath, e)
+                logging.exception(e)
+                filehandle.close()
+                message = "Sleeping " + str(sleep_err_seconds/60) + " minutes before storing logfile again - ftp upload error"
+                logging.info(message)
+                time.sleep(sleep_err_seconds)
         
-        except Exception, e:
-            logging.error("Failed to store ftp file: %s: %s", filepath, e)
-            logging.exception(e)
-            filehandle.close()
-            message = "Sleeping " + str(sleep_err_seconds/60) + " minutes before trying again"
+            quit_ftp(ftp_connection)
+    
+        else :
+            message = "Sleeping " + str(sleep_err_seconds/60) + " minutes before uploading logfile again -  ftp connection error"
             logging.info(message)
             time.sleep(sleep_err_seconds)
-        
-        quit_ftp(ftp_connection)
-    
-    else :
-        message = "Sleeping " + str(sleep_err_seconds/60) + " minutes before trying again - general error"
-        logging.info(message)
-        time.sleep(sleep_err_seconds)
-    # end if
+        # end if
     
     if today :
         current_priority_threads -= 1
@@ -398,6 +403,7 @@ def set_up_logging():
         # add the handler to the root logger
         logging.getLogger('').addHandler(console)
         set_up_logging.not_done = False
+
 set_up_logging.not_done = True  # logging should only be set up once, but
 # set_up_logging() may be called multiple times when testing
 
