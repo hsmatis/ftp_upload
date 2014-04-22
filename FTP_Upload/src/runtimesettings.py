@@ -44,7 +44,6 @@ rotate = "midnight"
 # name of log file
 ftp_upload_log = 'ftp_upload.log'
 
-
 # Flag to stop the main loop for test purposes.
 # Only for manipulation by testing code; always set to False in this file
 #
