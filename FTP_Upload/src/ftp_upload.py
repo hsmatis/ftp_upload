@@ -47,7 +47,7 @@ import schedule   #need to get this from gethub
 from localsettings_use_me import *
 from runtimesettings import *
 
-version_string = "1.5.1.13"
+version_string = "1.5.2.1"
 
 current_priority_threads=0 # global variable shared between threads keeping track of running priority threads.
 
@@ -266,8 +266,8 @@ def storedir(dirpath, ftp_dir, done_dir, today):
     quit_ftp(ftp_connection)
     
     mkdir(done_dir)
-    
-    files = os.listdir(dirpath)
+
+    files = sorted(os.listdir(dirpath))
     for filename in files:
         filepath = os.path.join(dirpath, filename)
         donepath = os.path.join(done_dir, filename)
@@ -413,8 +413,6 @@ set_up_logging.not_done = True  # logging should only be set up once, but
 # set_up_logging() may be called multiple times when testing
 
 def save_log_file():                #This is called when the scheduler decides it is time to save the log file
-    today = True        #not sure about this value
-    #   todaydate = datetime.today()
     todaydate = datetime.date.today()
     yesterday = todaydate - timedelta(1)
     
@@ -427,16 +425,17 @@ def save_log_file():                #This is called when the scheduler decides i
     
     filename = "ftp_upload-" + yesterday.strftime("%Y-%m-%d") + ".log"      #File name written on server
     current_threads = threading.active_count()
+
     logging.info("current threads: %s", current_threads)
-    
     logging.info("ftp_dir = %s", ftp_dir)
     logging.info("filepath = %s", filepath)
     logging.info("filename = %s", filename)
+    today = True        #not sure about this value
     
     if os.path.isfile(yesterday_log):       #Check to see if the log file was written yesterday
         
         if (current_threads >= max_threads) or (not today and current_priority_threads>=reserved_priority_threads):
-            # to many threads running already, upload ftp in current thread (don't move forward until upload is done)
+            # too many threads running already, upload ftp in current thread (don't move forward until upload is done)
             storelogfile(ftp_dir, filepath, filename, today)
             current_threads = threading.active_count()
             logging.info("current threads: %s", current_threads)
@@ -447,14 +446,13 @@ def save_log_file():                #This is called when the scheduler decides i
             threading.Thread(target=storelogfile, args=(ftp_dir, filepath, filename, today)).start()
             current_threads = threading.active_count()
             logging.info("current threads: %s", current_threads)
-    #end if
+        #end if
     else:
-        logging.info("Yesterday's log file has not been created: %s", yesterday_log)
-#end if
-#
-def save_today_log_file():                #This is called when the scheduler decides it is time to save the log file
-    today = True        #not sure about this value
-    #   todaydate = datetime.today()
+        logging.info("Yesterday's log file has not been saved in full: %s", yesterday_log)
+    #end if
+    #
+def save_today_log_file():              #This is called regularly when the scheduler decides it is time to save the log file
+
     todaydate = datetime.date.today()
 
     todaydate_log = ftp_upload_log    #File name of log file to be saved
@@ -466,14 +464,15 @@ def save_today_log_file():                #This is called when the scheduler dec
 
     filename = "ftp_upload-" + todaydate.strftime("%Y-%m-%d") + ".log"      #File name written on server
     current_threads = threading.active_count()
-    logging.info("current threads: %s", current_threads)
 
+    logging.info("current threads: %s", current_threads)
     logging.info("ftp_dir = %s", ftp_dir)
     logging.info("filepath = %s", filepath)
     logging.info("filename = %s", filename)
+    today = True        #not sure about this value
 
     if (current_threads >= max_threads) or (not today and current_priority_threads>=reserved_priority_threads):
-        # to many threads running already, upload ftp in current thread (don't move forward until upload is done)
+        # too many threads running already, upload ftp in current thread (don't move forward until upload is done)
         storelogfile(ftp_dir, filepath, filename, today)
         current_threads = threading.active_count()
         logging.info("current threads: %s", current_threads)
@@ -485,8 +484,6 @@ def save_today_log_file():                #This is called when the scheduler dec
         current_threads = threading.active_count()
         logging.info("current threads: %s", current_threads)
     #end if
-
-#end if
 
 def main():
     global uploads_to_do    # for testing only
