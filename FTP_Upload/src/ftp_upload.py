@@ -47,7 +47,7 @@ import schedule   #need to get this from gethub
 from localsettings_use_me import *
 from runtimesettings import *
 
-version_string = "1.5.1.12"
+version_string = "1.5.1.13"
 
 current_priority_threads=0 # global variable shared between threads keeping track of running priority threads.
 
@@ -301,6 +301,11 @@ def storedir(dirpath, ftp_dir, done_dir, today):
     
     return
 
+def addSecs(tm, secs):              #routine to add seconds to the current time
+    fulldate = datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
+    fulldate = fulldate + datetime.timedelta(seconds=secs)
+    return fulldate.time()
+
 
 def deltree(deldir):
     logging.info("deltree: %s", (deldir))
@@ -447,15 +452,59 @@ def save_log_file():                #This is called when the scheduler decides i
         logging.info("Yesterday's log file has not been created: %s", yesterday_log)
 #end if
 #
+def save_today_log_file():                #This is called when the scheduler decides it is time to save the log file
+    today = True        #not sure about this value
+    #   todaydate = datetime.today()
+    todaydate = datetime.date.today()
+
+    todaydate_log = ftp_upload_log    #File name of log file to be saved
+    message = "About to save " + todaydate_log
+    logging.info(message)
+    dirpath = ""
+    filepath = os.path.join(dirpath, todaydate_log)
+    ftp_dir = log_destination
+
+    filename = "ftp_upload-" + todaydate.strftime("%Y-%m-%d") + ".log"      #File name written on server
+    current_threads = threading.active_count()
+    logging.info("current threads: %s", current_threads)
+
+    logging.info("ftp_dir = %s", ftp_dir)
+    logging.info("filepath = %s", filepath)
+    logging.info("filename = %s", filename)
+
+    if (current_threads >= max_threads) or (not today and current_priority_threads>=reserved_priority_threads):
+        # to many threads running already, upload ftp in current thread (don't move forward until upload is done)
+        storelogfile(ftp_dir, filepath, filename, today)
+        current_threads = threading.active_count()
+        logging.info("current threads: %s", current_threads)
+    else:
+
+        # start new thread
+        logging.info("starting new storelogfile thread")
+        threading.Thread(target=storelogfile, args=(ftp_dir, filepath, filename, today)).start()
+        current_threads = threading.active_count()
+        logging.info("current threads: %s", current_threads)
+    #end if
+
+#end if
+
 def main():
     global uploads_to_do    # for testing only
-    
+
+
     set_up_logging()
     signal.signal(signal.SIGINT, sighandler)    # dump thread stacks on Ctl-C
     logging.info("Program ftp_upload.py started: Version %s", version_string)
     
-    #    schedule.every(save_log_time).minutes.do(save_log_interval)  # save the log_file
+    schedule.every(save_log_interval).minutes.do(save_today_log_file)  # save the log_file
     schedule.every().day.at(save_log_time).do(save_log_file)      #save the log file once a day
+    message = "Saving log file every day at " + save_log_time
+    logging.info(message)
+    message = "Saving log file every " + str(save_log_interval) + " minutes"
+    logging.info(message)
+    message = "Saving log files to directory " + log_destination
+    logging.info(message)
+
     try:
         mkdir(processed_location)
         # Setup the threads, don't actually run them yet used to test if the threads are alive.

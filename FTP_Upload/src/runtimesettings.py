@@ -56,5 +56,6 @@ terminate_main_loop = False
 uploads_to_do = False
 #        
 # encapsulate former if __name__ == "__main__" code in main() function for ease of testing
+#
 
  
