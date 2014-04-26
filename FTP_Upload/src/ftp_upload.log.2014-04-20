@@ -1,0 +1,145 @@
+04-13 13:16:13 INFO     MainThread Program ftp_upload.py started: Version 1.5.1.12
+04-13 13:16:13 ERROR    MainThread Unexpected exception in main()
+04-13 13:16:13 ERROR    MainThread [Errno 2] No such file or directory: '/home/pi/camera/new'
+Traceback (most recent call last):
+  File "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 470, in main
+    daydirs = get_daydirs(incoming_location)
+  File "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 103, in get_daydirs
+    daydirlist = os.listdir(location)
+OSError: [Errno 2] No such file or directory: '/home/pi/camera/new'
+04-13 13:16:16 INFO     MainThread Program ftp_upload.py started: Version 1.5.1.12
+04-13 13:16:16 ERROR    MainThread Unexpected exception in main()
+04-13 13:16:16 ERROR    MainThread [Errno 2] No such file or directory: '/home/pi/camera/new'
+Traceback (most recent call last):
+  File "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 470, in main
+    daydirs = get_daydirs(incoming_location)
+  File "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 103, in get_daydirs
+    daydirlist = os.listdir(location)
+OSError: [Errno 2] No such file or directory: '/home/pi/camera/new'
+04-13 13:16:46 INFO     MainThread Program ftp_upload.py started: Version 1.5.1.12
+04-13 13:16:46 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:16:46 INFO     MainThread Time is Sun Apr 13 13:16:46 2014
+04-13 13:16:59 INFO     MainThread User requested stack dumps
+# Thread: MainThread(140735187424016)
+File: "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 520, in <module>
+  main()
+File: "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 505, in main
+  time.sleep(sleep_upload) # sleep
+File: "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 380, in sighandler
+  dumpstacks()
+File: "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 373, in dumpstacks
+  for filename, lineno, name, line in traceback.extract_stack(stack):
+04-13 13:16:59 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:16:59 INFO     MainThread Time is Sun Apr 13 13:16:59 2014
+04-13 13:17:29 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:17:29 INFO     MainThread Time is Sun Apr 13 13:17:29 2014
+04-13 13:17:50 INFO     MainThread Program ftp_upload.py started: Version 1.5.1.12
+04-13 13:17:50 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:17:50 INFO     MainThread Time is Sun Apr 13 13:17:50 2014
+04-13 13:17:59 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:17:59 INFO     MainThread Time is Sun Apr 13 13:17:59 2014
+04-13 13:18:20 INFO     MainThread Running job Every 1 day at 13:18:00 do save_log_file() (last run: [never], next run: 2014-04-13 13:18:00)
+04-13 13:18:20 INFO     MainThread About to save ftp_upload.log.2014-04-12
+04-13 13:18:20 INFO     MainThread current threads: 2
+04-13 13:18:20 INFO     MainThread ftp_dir = /logfiles/6824Sherwick
+04-13 13:18:20 INFO     MainThread filepath = ftp_upload.log.2014-04-12
+04-13 13:18:20 INFO     MainThread filename = ftp_upload-2014-04-12.log
+04-13 13:18:20 INFO     MainThread Yesterday's log file has not been created: ftp_upload.log.2014-04-12
+04-13 13:18:20 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:18:20 INFO     MainThread Time is Sun Apr 13 13:18:20 2014
+04-13 13:18:29 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:18:29 INFO     MainThread Time is Sun Apr 13 13:18:29 2014
+04-13 13:18:50 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:18:50 INFO     MainThread Time is Sun Apr 13 13:18:50 2014
+04-13 13:18:59 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:18:59 INFO     MainThread Time is Sun Apr 13 13:18:59 2014
+04-13 13:19:20 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:19:20 INFO     MainThread Time is Sun Apr 13 13:19:20 2014
+04-13 13:19:29 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:19:29 INFO     MainThread Time is Sun Apr 13 13:19:29 2014
+04-13 13:19:50 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:19:50 INFO     MainThread Time is Sun Apr 13 13:19:50 2014
+04-13 13:19:59 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:19:59 INFO     MainThread Time is Sun Apr 13 13:19:59 2014
+04-13 13:20:20 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:20:20 INFO     MainThread Time is Sun Apr 13 13:20:20 2014
+04-13 13:20:29 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:20:29 INFO     MainThread Time is Sun Apr 13 13:20:29 2014
+04-13 13:20:50 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:20:50 INFO     MainThread Time is Sun Apr 13 13:20:50 2014
+04-13 13:20:59 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:20:59 INFO     MainThread Time is Sun Apr 13 13:20:59 2014
+04-13 13:21:20 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:21:20 INFO     MainThread Time is Sun Apr 13 13:21:20 2014
+04-13 13:21:29 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:21:29 INFO     MainThread Time is Sun Apr 13 13:21:29 2014
+04-13 13:21:50 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:21:50 INFO     MainThread Time is Sun Apr 13 13:21:50 2014
+04-13 13:21:59 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:21:59 INFO     MainThread Time is Sun Apr 13 13:21:59 2014
+04-13 13:22:04 INFO     MainThread User requested stack dumps
+# Thread: MainThread(140735187424016)
+File: "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 520, in <module>
+  main()
+File: "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 505, in main
+  time.sleep(sleep_upload) # sleep
+File: "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 380, in sighandler
+  dumpstacks()
+File: "/Users/family/GoogleDrive/IntelliJ-Home/ftp_upload/FTP_Upload/src/ftp_upload.py", line 373, in dumpstacks
+  for filename, lineno, name, line in traceback.extract_stack(stack):
+04-13 13:22:04 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:22:04 INFO     MainThread Time is Sun Apr 13 13:22:04 2014
+04-13 13:22:17 INFO     MainThread Program ftp_upload.py started: Version 1.5.1.12
+04-13 13:22:17 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:22:17 INFO     MainThread Time is Sun Apr 13 13:22:17 2014
+04-13 13:22:27 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:22:27 INFO     MainThread Time is Sun Apr 13 13:22:27 2014
+04-13 13:22:29 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:22:29 INFO     MainThread Time is Sun Apr 13 13:22:29 2014
+04-13 13:22:34 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:22:34 INFO     MainThread Time is Sun Apr 13 13:22:34 2014
+04-13 13:22:37 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:22:37 INFO     MainThread Time is Sun Apr 13 13:22:37 2014
+04-13 13:22:47 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:22:47 INFO     MainThread Time is Sun Apr 13 13:22:47 2014
+04-13 13:22:57 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:22:57 INFO     MainThread Time is Sun Apr 13 13:22:57 2014
+04-13 13:22:59 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:22:59 INFO     MainThread Time is Sun Apr 13 13:22:59 2014
+04-13 13:23:04 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:23:04 INFO     MainThread Time is Sun Apr 13 13:23:04 2014
+04-13 13:23:07 INFO     MainThread Running job Every 1 day at 13:23:00 do save_log_file() (last run: [never], next run: 2014-04-13 13:23:00)
+04-13 13:23:07 INFO     MainThread About to save ftp_upload.log.2014-04-12
+04-13 13:23:07 INFO     MainThread current threads: 2
+04-13 13:23:07 INFO     MainThread ftp_dir = /logfiles/6824Sherwick
+04-13 13:23:07 INFO     MainThread filepath = ftp_upload.log.2014-04-12
+04-13 13:23:07 INFO     MainThread filename = ftp_upload-2014-04-12.log
+04-13 13:23:07 INFO     MainThread Yesterday's log file has not been created: ftp_upload.log.2014-04-12
+04-13 13:23:07 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:23:07 INFO     MainThread Time is Sun Apr 13 13:23:07 2014
+04-13 13:23:17 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:23:17 INFO     MainThread Time is Sun Apr 13 13:23:17 2014
+04-13 13:23:27 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:23:27 INFO     MainThread Time is Sun Apr 13 13:23:27 2014
+04-13 13:23:29 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:23:29 INFO     MainThread Time is Sun Apr 13 13:23:29 2014
+04-13 13:23:34 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:23:34 INFO     MainThread Time is Sun Apr 13 13:23:34 2014
+04-13 13:23:37 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:23:37 INFO     MainThread Time is Sun Apr 13 13:23:37 2014
+04-13 13:23:47 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:23:47 INFO     MainThread Time is Sun Apr 13 13:23:47 2014
+04-13 13:23:57 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:23:57 INFO     MainThread Time is Sun Apr 13 13:23:57 2014
+04-13 13:23:59 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:23:59 INFO     MainThread Time is Sun Apr 13 13:23:59 2014
+04-13 13:24:04 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:24:04 INFO     MainThread Time is Sun Apr 13 13:24:04 2014
+04-13 13:24:07 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:24:07 INFO     MainThread Time is Sun Apr 13 13:24:07 2014
+04-13 13:24:17 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:24:17 INFO     MainThread Time is Sun Apr 13 13:24:17 2014
+04-13 13:24:27 INFO     MainThread Sleeping 10 seconds for upload
+04-13 13:24:27 INFO     MainThread Time is Sun Apr 13 13:24:27 2014
+04-13 13:24:29 INFO     MainThread Sleeping 30 seconds for upload
+04-13 13:24:29 INFO     MainThread Time is Sun Apr 13 13:24:29 2014
