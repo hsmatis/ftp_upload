@@ -1,5 +1,6 @@
 *.pyc
 *.log
+<<<<<<< HEAD
 *.xml
 .idea/.name
 .idea/compiler.xml
@@ -44,3 +45,6 @@ FTP_Upload/v13/runtimesettings.py
 .pydevproject
 
 .project
+=======
+localsettings_use_me.py
+>>>>>>> FETCH_HEAD
