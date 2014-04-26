@@ -30,7 +30,8 @@
 ######################################################################################
 
 
-import os.path
+#import os.path
+import os
 import shutil
 import datetime
 from datetime import timedelta
@@ -47,7 +48,7 @@ import schedule   #need to get this from gethub
 from localsettings_use_me import *
 from runtimesettings import *
 
-version_string = "1.5.2.1"
+version_string = "1.5.2.2 "
 
 current_priority_threads=0 # global variable shared between threads keeping track of running priority threads.
 
@@ -217,9 +218,10 @@ def storelogfile(ftp_dir, filepath, filename, today):             #For storing l
     ftp_connection = connect_to_ftp()
     count = 0
     not_upload = True
-    while not_upload or count < 5:           #Loop to upload files
+    while not_upload and count < 5:           #Loop to upload files
         count += 1
         if ftp_connection != None:
+            ftp_connection = ftplib.FTP(ftp_server,ftp_username,ftp_password,timeout=30) #not sure if this is needed
             change_create_ftp_dir(ftp_connection, ftp_dir)
             logging.info("Uploading %s", filepath)
             try:
@@ -234,14 +236,18 @@ def storelogfile(ftp_dir, filepath, filename, today):             #For storing l
                 logging.error("Failed to store logfile file: %s: %s", filepath, e)
                 logging.exception(e)
                 filehandle.close()
-                message = "Sleeping " + str(sleep_err_seconds/60) + " minutes before storing logfile again - ftp upload error"
+                message = "Sleeping " + str(sleep_err_seconds/60) + " minutes before storing logfile"
+                logging.info(message)
+                message = "ftp upload error"
                 logging.info(message)
                 time.sleep(sleep_err_seconds)
         
             quit_ftp(ftp_connection)
     
         else :
-            message = "Sleeping " + str(sleep_err_seconds/60) + " minutes before uploading logfile again -  ftp connection error"
+            message = "Sleeping " + str(sleep_err_seconds/60) + " minutes before uploading logfile"
+            logging.info(message)
+            message = "ftp connection error"
             logging.info(message)
             time.sleep(sleep_err_seconds)
         # end if
@@ -412,92 +418,69 @@ def set_up_logging():
 set_up_logging.not_done = True  # logging should only be set up once, but
 # set_up_logging() may be called multiple times when testing
 
-def save_log_file():                #This is called when the scheduler decides it is time to save the log file
+def save_yesterday_log_file():                #This is called when the scheduler decides it is time to save yesterday's log file
     todaydate = datetime.date.today()
     yesterday = todaydate - timedelta(1)
-    
     yesterday_log = ftp_upload_log +"." + yesterday.strftime("%Y-%m-%d")    #File name of log file to be saved
     message = "About to save " + yesterday_log
     logging.info(message)
     dirpath = ""
     filepath = os.path.join(dirpath, yesterday_log)
-    ftp_dir = log_destination
-    
-    filename = "ftp_upload-" + yesterday.strftime("%Y-%m-%d") + ".log"      #File name written on server
-    current_threads = threading.active_count()
 
-    logging.info("current threads: %s", current_threads)
-    logging.info("ftp_dir = %s", ftp_dir)
-    logging.info("filepath = %s", filepath)
-    logging.info("filename = %s", filename)
-    today = True        #not sure about this value
-    
+    filename = "ftp_upload-" + yesterday.strftime("%Y-%m-%d") + ".log"      #File name written on server
+    logging.info("Files waiting to be upload.")
     if os.path.isfile(yesterday_log):       #Check to see if the log file was written yesterday
-        
-        if (current_threads >= max_threads) or (not today and current_priority_threads>=reserved_priority_threads):
-            # too many threads running already, upload ftp in current thread (don't move forward until upload is done)
-            storelogfile(ftp_dir, filepath, filename, today)
-            current_threads = threading.active_count()
-            logging.info("current threads: %s", current_threads)
-        else:
-            
-            # start new thread
-            logging.info("starting new storelogfile thread")
-            threading.Thread(target=storelogfile, args=(ftp_dir, filepath, filename, today)).start()
-            current_threads = threading.active_count()
-            logging.info("current threads: %s", current_threads)
-        #end if
+        write_out_log_file(filepath,filename)
     else:
         logging.info("Yesterday's log file has not been saved in full: %s", yesterday_log)
     #end if
+    command = "ls -R " + incoming_location + " >> " + ftp_upload_log      #list the number of files not yet transferred
+    os.system(command)
     #
-def save_today_log_file():              #This is called regularly when the scheduler decides it is time to save the log file
-
+def save_today_log_file():              #This is called regularly when the scheduler decides it is time to save today's log file
     todaydate = datetime.date.today()
-
     todaydate_log = ftp_upload_log    #File name of log file to be saved
     message = "About to save " + todaydate_log
     logging.info(message)
     dirpath = ""
     filepath = os.path.join(dirpath, todaydate_log)
-    ftp_dir = log_destination
-
     filename = "ftp_upload-" + todaydate.strftime("%Y-%m-%d") + ".log"      #File name written on server
-    current_threads = threading.active_count()
 
-    logging.info("current threads: %s", current_threads)
+    write_out_log_file(filepath,filename)
+
+
+def write_out_log_file(filepath,filename):
+    ftp_dir = log_destination
     logging.info("ftp_dir = %s", ftp_dir)
     logging.info("filepath = %s", filepath)
     logging.info("filename = %s", filename)
+    current_threads = threading.active_count()
+    logging.info("current threads: %s", current_threads)
     today = True        #not sure about this value
-
     if (current_threads >= max_threads) or (not today and current_priority_threads>=reserved_priority_threads):
         # too many threads running already, upload ftp in current thread (don't move forward until upload is done)
         storelogfile(ftp_dir, filepath, filename, today)
         current_threads = threading.active_count()
         logging.info("current threads: %s", current_threads)
     else:
-
         # start new thread
         logging.info("starting new storelogfile thread")
         threading.Thread(target=storelogfile, args=(ftp_dir, filepath, filename, today)).start()
         current_threads = threading.active_count()
         logging.info("current threads: %s", current_threads)
-    #end if
+        #end if
 
 def main():
     global uploads_to_do    # for testing only
-
-
     set_up_logging()
     signal.signal(signal.SIGINT, sighandler)    # dump thread stacks on Ctl-C
     logging.info("Program ftp_upload.py started: Version %s", version_string)
     
-    schedule.every(save_log_interval).minutes.do(save_today_log_file)  # save the log_file
-    schedule.every().day.at(save_log_time).do(save_log_file)      #save the log file once a day
-    message = "Saving log file every day at " + save_log_time
+    schedule.every(save_today_log_interval).minutes.do(save_today_log_file)  # save today's log_file
+    schedule.every().day.at(save_yesterday_log_time).do(save_yesterday_log_file)      #save the log file once a day
+    message = "Saving yesterday's log file every day at " + save_yesterday_log_time
     logging.info(message)
-    message = "Saving log file every " + str(save_log_interval) + " minutes"
+    message = "Saving today's log file every " + str(save_today_log_interval) + " minutes"
     logging.info(message)
     message = "Saving log files to directory " + log_destination
     logging.info(message)
