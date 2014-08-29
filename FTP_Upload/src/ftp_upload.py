@@ -29,9 +29,11 @@
 #                                                                                    #
 ######################################################################################
 
+# Version 1.5.3 - add saving of cron file at end of log
 
 #import os.path
 import os
+import os.path
 import shutil
 import datetime
 from datetime import timedelta
@@ -48,7 +50,7 @@ import schedule   #need to get this from gethub
 from localsettings_use_me import *
 from runtimesettings import *
 
-version_string = "1.5.2.2 "
+version_string = "1.5.3"
 
 current_priority_threads=0 # global variable shared between threads keeping track of running priority threads.
 
@@ -147,7 +149,6 @@ def quit_ftp(ftp_connection):
             #logging.warning("Exception during FTP.quit():", e)
             logging.warning("Exception during FTP.quit():")
             logging.exception(e)
-
 
 def storefile(ftp_dir, filepath, donepath, filename, today):
     global current_priority_threads
@@ -304,7 +305,6 @@ def storedir(dirpath, ftp_dir, done_dir, today):
     # end for
     
     rmdir(dirpath)
-    
     return
 
 def addSecs(tm, secs):              #routine to add seconds to the current time
@@ -344,7 +344,6 @@ def purge_old_images(purge_dir):
         deltree(dirpath)
         files_purged = True
     return
-
 
 def isdir_today(indir):
     (processingyear,processingmonth, processingday) = dir2date(indir)
@@ -437,11 +436,26 @@ def save_yesterday_log_file():                #This is called when the scheduler
     command = "ls -R " + incoming_location + " >> " + ftp_upload_log      #list the number of files not yet transferred
     os.system(command)
     #
+
 def save_today_log_file():              #This is called regularly when the scheduler decides it is time to save today's log file
     todaydate = datetime.date.today()
     todaydate_log = ftp_upload_log    #File name of log file to be saved
     message = "About to save " + todaydate_log
     logging.info(message)
+    message = "Looking for chron log " + ftp_reload_log
+    reload_log = ftp_destination + ftp_reload_log
+    logging.info(message)
+    if os.path.isfile(reload_log):
+        message = "Saving " + reload_log
+        logging.info(message)
+        with open(reload_log) as f:
+            for line in f:
+                logging.info(line)
+        os.rename(reload_log, reload_log + "-yesterday")        #rename the chron log file
+    else:
+        message = "Could not find " + ftp_reload_log
+        logging.info(message)
+    
     dirpath = ""
     filepath = os.path.join(dirpath, todaydate_log)
     filename = "ftp_upload-" + todaydate.strftime("%Y-%m-%d") + ".log"      #File name written on server
@@ -484,6 +498,11 @@ def main():
     logging.info(message)
     message = "Saving log files to directory " + log_destination
     logging.info(message)
+
+    command = "ls -R " + processed_location + " >> " + ftp_upload_log      #list the number of files not yet transferred
+    logging.info("Files not uploaded")
+    os.system(command)
+    logging.info("End of list of files not uploaded")
 
     try:
         mkdir(processed_location)

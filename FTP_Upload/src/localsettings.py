@@ -74,7 +74,6 @@ destination = "6824aSherwick"
 log_destination = "/logfiles/" + destination + "/"     # remember to start with / - This folder must existbase_location = "/Users/matis/cameratest/sftp/"
 
 save_today_log_interval = 60   #minutes
-save_yesterday_log_time= "22:22"
-
+save_yesterday_log_time= "02:00"    #Set this at a time when your camera is not very active
 
 
