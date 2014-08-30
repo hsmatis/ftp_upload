@@ -29,11 +29,10 @@
 #                                                                                    #
 ######################################################################################
 
-# Version 1.5.3 - add saving of cron file at end of log
+# Version 1.5.4 - add saving of cron file at end of log
 
 #import os.path
 import os
-import os.path
 import shutil
 import datetime
 from datetime import timedelta
@@ -47,10 +46,10 @@ import traceback
 import signal
 import schedule   #need to get this from gethub
 
-from localsettings_use_me import *
+from localsettings import *
 from runtimesettings import *
 
-version_string = "1.5.3"
+version_string = "1.5.4.7"
 
 current_priority_threads=0 # global variable shared between threads keeping track of running priority threads.
 
@@ -442,21 +441,27 @@ def save_today_log_file():              #This is called regularly when the sched
     todaydate_log = ftp_upload_log    #File name of log file to be saved
     message = "About to save " + todaydate_log
     logging.info(message)
+
     message = "Looking for chron log " + ftp_reload_log
-    reload_log = ftp_destination + ftp_reload_log
     logging.info(message)
+
+    dirpath = ""
+    reload_log = os.path.join(dirpath, ftp_reload_log)
+
+    message = "Looking for the full path of chron log " + reload_log
+    logging.info(message)
+
     if os.path.isfile(reload_log):
         message = "Saving " + reload_log
         logging.info(message)
         with open(reload_log) as f:
             for line in f:
-                logging.info(line)
-        os.rename(reload_log, reload_log + "-yesterday")        #rename the chron log file
+                logging.info(line[:-1] )            #getting rid of extra new line
+        os.remove(reload_log)        #remove the chron log file
     else:
         message = "Could not find " + ftp_reload_log
         logging.info(message)
-    
-    dirpath = ""
+
     filepath = os.path.join(dirpath, todaydate_log)
     filename = "ftp_upload-" + todaydate.strftime("%Y-%m-%d") + ".log"      #File name written on server
 
@@ -499,10 +504,12 @@ def main():
     message = "Saving log files to directory " + log_destination
     logging.info(message)
 
+    save_today_log_file() #temp
+
     command = "ls -R " + processed_location + " >> " + ftp_upload_log      #list the number of files not yet transferred
-    logging.info("Files not uploaded")
+    logging.info("Beginning of the list of images not uploaded to the server")
     os.system(command)
-    logging.info("End of list of files not uploaded")
+    logging.info("End of list of Images not uploaded to the server")
 
     try:
         mkdir(processed_location)
