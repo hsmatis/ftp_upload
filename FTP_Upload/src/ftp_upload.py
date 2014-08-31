@@ -49,7 +49,7 @@ import schedule   #need to get this from gethub
 from localsettings import *
 from runtimesettings import *
 
-version_string = "1.5.4.7"
+version_string = "1.5.4.8"
 
 current_priority_threads=0 # global variable shared between threads keeping track of running priority threads.
 
@@ -506,7 +506,7 @@ def main():
 
     save_today_log_file() #temp
 
-    command = "ls -R " + processed_location + " >> " + ftp_upload_log      #list the number of files not yet transferred
+    command = "ls -R " + incoming_location + " >> " + ftp_upload_log      #list the number of files not yet transferred
     logging.info("Beginning of the list of images not uploaded to the server")
     os.system(command)
     logging.info("End of list of Images not uploaded to the server")
