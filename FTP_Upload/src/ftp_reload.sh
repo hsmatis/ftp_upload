@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#ftp_reload.sh is a script written by Howard Matis - 2014 - Version 1.1
+#ftp_reload.sh is a script written by Howard Matis - 2014 - Version 1.3
 #check if ftp_upload is running
 #
 # local variables
@@ -28,4 +28,5 @@ sudo -u pi bash $DIR/ftp_upload.sh &
 else
 # Process is found (can't write to ftp_upload because program would overwrite this command)
 echo "$MYNAME> $NOW – $PROCESS found - No need to do anything" >> $CRONLOG
+ps -ef | grep -v grep | grep $PROCESS.py >> $CRONLOG
 fi
